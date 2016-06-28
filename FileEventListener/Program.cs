@@ -17,6 +17,8 @@ namespace FileEventListener
             string path = GetFilePath();
 
             FileSystemWatcher watcher = new FileSystemWatcher(path);
+            Console.WriteLine(watcher.Path);
+            CreateLogFile(watcher.Path);
             RegisterHandlers(watcher);
 
             Console.WriteLine("Press 'q' to Quit");
@@ -47,7 +49,17 @@ namespace FileEventListener
                 }
             }
 
+            if (path != null && path[path.Length - 1].ToString().Equals(@"\")) return path;
+            var builder = new StringBuilder(path);
+            builder.Append(@"\");
+            path = builder.ToString();
+
             return path;
+        }
+
+        private static void CreateLogFile(string path)
+        {
+            Console.WriteLine("Log File Created At: " + info.DirectoryName);
         }
 
         private static void RegisterHandlers(FileSystemWatcher watcher)
